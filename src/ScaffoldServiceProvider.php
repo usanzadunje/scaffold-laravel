@@ -12,7 +12,6 @@ class ScaffoldServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('scaffold-laravel')
-            ->hasConfigFile()
             ->hasCommand(ScaffoldCommand::class);
     }
 }

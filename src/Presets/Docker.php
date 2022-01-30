@@ -17,6 +17,7 @@ class Docker extends Preset
         static::ensureDirectoriesExist();
         static::updateBootstrapping();
         static::updateEnvContent();
+        static::updateWebpackConfiguration();
     }
 
     /**
@@ -40,7 +41,12 @@ class Docker extends Preset
         copy(__DIR__ . '/docker-stubs/.dockerignore', base_path('.dockerignore'));
     }
 
-    public static function updateEnvContent() {
+    /**
+     * Updating .'env' file in order for Docker to run properly.
+     *
+     * @return void
+     */
+    public static function updateEnvContent(): void {
         if(file_exists(base_path('.env'))) {
             $replace = str_replace(
                 "DB_HOST=" . env('DB_HOST'),
@@ -89,4 +95,30 @@ class Docker extends Preset
             );
         }
     }
+
+    /**
+     * Updating 'webpack.mix.js' file in order for Docker to work with browserSync plugin.
+     *
+     * @return void
+     */
+    public static function updateWebpackConfiguration(): void {
+        if(file_exists(base_path('webpack.mix.js'))) {
+            $replace = str_replace(
+                "127.0.0.1:8000',",
+                "app_container',\n\thost: 'localhost',",
+                file_get_contents(base_path('webpack.mix.js'))
+            );
+            $replace = str_replace(
+                "open: true",
+                "open: false",
+                $replace
+            );
+            file_put_contents(
+                base_path('webpack.mix.js'),
+                $replace
+            );
+        }
+    }
 }
+
+

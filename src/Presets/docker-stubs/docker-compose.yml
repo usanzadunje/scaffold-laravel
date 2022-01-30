@@ -9,14 +9,14 @@ services:
       - ./:/var/www
     command: php artisan serve --host=0.0.0.0 --port=80
 
-  queue:
-    image: usanzadunje/laravel-dev
-    container_name: queue_worker_container
-    restart: unless-stopped
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    command: php artisan queue:listen
+  #  queue:
+  #    image: usanzadunje/laravel-dev
+  #    container_name: queue_worker_container
+  #    restart: unless-stopped
+  #    working_dir: /var/www
+  #    volumes:
+  #      - ./:/var/www
+  #    command: php artisan queue:listen
 
   npm:
     image: node:16-alpine
@@ -27,8 +27,7 @@ services:
     ports:
       - "3000:3000"
       - "3001:3001"
-    # command: npm run watch for webpack
-    command: npm run dev
+    command: npm run watch
 
   db:
     image: mysql:5.7

@@ -7,6 +7,7 @@ const path = require('path');
 mix.browserSync({
     proxy: '127.0.0.1:8000',
     port: 3000,
+    open: true,
 });
 
 /**
@@ -14,7 +15,7 @@ mix.browserSync({
  */
 mix.alias({
     '@': path.resolve('./resources/js'),
-})
+});
 
 /*
  |--------------------------------------------------------------------------

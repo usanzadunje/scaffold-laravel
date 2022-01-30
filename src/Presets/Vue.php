@@ -33,6 +33,7 @@ class Vue extends Preset
         }
         if(static::$stateManager === 'Vuex') {
             static::updateVuexBootstrapping();
+            static::updateWelcomeViewWithVuex();
         }
         static::updateComponent();
         static::removeNodeModules();
@@ -176,7 +177,14 @@ class Vue extends Preset
                 $replaced
             )
         );
+    }
 
+    /**
+     * Add vuex example into 'Welcome.vue' view file.
+     *
+     * @return void
+     */
+    protected static function updateWelcomeViewWithVuex() {
         if(static::$router === 'Vue Router') {
             $replaced = str_replace(
                 "import { useRouter }       from 'vue-router';",

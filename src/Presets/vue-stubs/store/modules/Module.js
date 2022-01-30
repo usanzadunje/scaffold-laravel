@@ -1,7 +1,7 @@
 export const namespaced = true;
 
 export const state = {
-    test: null,
+    test: 'Testing store value...',
 };
 
 export const mutations = {

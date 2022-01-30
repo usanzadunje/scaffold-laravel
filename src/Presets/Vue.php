@@ -168,17 +168,43 @@ class Vue extends Preset
         $replaced = str_replace(
             "const app = createApp(App)",
             "const app = createApp(App)\n\t.use(store)",
-            file_get_contents('./resources/js/app.js')
+            file_get_contents(resource_path('js/app.js'))
         );
-
         file_put_contents(
-            './resources/js/app.js',
+            resource_path('js/app.js'),
             str_replace(
                 "import App from './App.vue';",
                 "import App from './App.vue';\n\nimport store from './store';",
                 $replaced
             )
         );
+
+        if(static::$router === 'Vue Router') {
+            $replaced = str_replace(
+                "import { useRouter }       from 'vue-router';",
+                "import { useRouter }       from 'vue-router';\nimport { useStore }       from 'vuex';",
+                file_get_contents(resource_path('js/views/Welcome.vue'))
+            );
+            $replaced = str_replace(
+                "const router = useRouter();",
+                "const router = useRouter();\n\t\tconst store = useStore();",
+                $replaced
+            );
+            $replaced = str_replace(
+                "router,",
+                "router,\n\t\t\tstore,",
+                $replaced
+            );
+            $replaced = str_replace(
+                "Welcome!!!",
+                "Welcome!!!\n\t\t<div>Testing vuex store: {{ store.getters['module/test']}}</div>",
+                $replaced
+            );
+            file_put_contents(
+                resource_path('js/views/Welcome.vue'),
+                $replaced
+            );
+        }
     }
 
     /**

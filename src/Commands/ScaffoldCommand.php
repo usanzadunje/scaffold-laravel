@@ -15,6 +15,18 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
+        $this->checkIfUserWantsVue();
+        $this->checkIfUserWantsDocker();
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * Asking user and checking whether they are going to use Vue as frontend.
+     *
+     * @return void
+     */
+    public function checkIfUserWantsVue() {
         $wantsVue = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
 
         if($this->isPositiveAnswer($wantsVue)) {
@@ -31,17 +43,19 @@ class ScaffoldCommand extends Command
 
             $this->vue($router, $stateManager);
         }
+    }
 
+    /**
+     * Asking user and checking whether they are going to use Docker environment.
+     *
+     * @return void
+     */
+    public function checkIfUserWantsDocker() {
         $wantsDocker = $this->ask('Do you want Docker inside your project? (yes/no)', 'no');
 
         if($this->isPositiveAnswer($wantsDocker)) {
             $this->docker();
         }
-
-        $this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
-        $this->comment('Additionally you cold run "php artisan serve" and "npm run watch" to serve your application.');
-
-        return self::SUCCESS;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Usanzadunje\Scaffold\Commands;
 
 use Illuminate\Console\Command;
+use Usanzadunje\Scaffold\Presets\BrowserSync;
 use Usanzadunje\Scaffold\Presets\Docker;
 use Usanzadunje\Scaffold\Presets\Vue;
 use Usanzadunje\Scaffold\Presets\VueRouter;
@@ -15,6 +16,7 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
+        $this->installBrowserSync();
         $this->checkIfUserWantsVue();
         $this->checkIfUserWantsDocker();
 
@@ -22,14 +24,24 @@ class ScaffoldCommand extends Command
     }
 
     /**
-     * Asking user and checking whether they are going to use Vue as frontend.
+     * Installing BrowserSync with webpack.
      *
      * @return void
      */
-    public function checkIfUserWantsVue() {
+    public function installBrowserSync(): void {
+        BrowserSync::install();
+        $this->info('Webpack BrowserSync installed successfully.');
+    }
+
+    /**
+     * Asking user and checking whether they are going to use Vue as frontend.
+     *
+     * @return bool
+     */
+    public function checkIfUserWantsVue(): bool {
         $wantsVue = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
 
-        if($this->isPositiveAnswer($wantsVue)) {
+        if($wantsVue = $this->isPositiveAnswer($wantsVue)) {
             $router = $this->choice(
                 'Choose routing for your application?',
                 ['None', 'Vue Router', 'Inertia'],
@@ -43,19 +55,23 @@ class ScaffoldCommand extends Command
 
             $this->vue($router, $stateManager);
         }
+
+        return $wantsVue;
     }
 
     /**
      * Asking user and checking whether they are going to use Docker environment.
      *
-     * @return void
+     * @return bool
      */
-    public function checkIfUserWantsDocker() {
+    public function checkIfUserWantsDocker(): bool {
         $wantsDocker = $this->ask('Do you want Docker inside your project? (yes/no)', 'no');
 
-        if($this->isPositiveAnswer($wantsDocker)) {
+        if($wantsDocker = $this->isPositiveAnswer($wantsDocker)) {
             $this->docker();
         }
+
+        return $wantsDocker;
     }
 
     /**

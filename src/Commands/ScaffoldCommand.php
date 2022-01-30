@@ -3,6 +3,7 @@
 namespace Usanzadunje\Scaffold\Commands;
 
 use Illuminate\Console\Command;
+use Usanzadunje\Scaffold\Presets\Docker;
 use Usanzadunje\Scaffold\Presets\Vue;
 
 class ScaffoldCommand extends Command
@@ -12,9 +13,9 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
-        $vueFrontendAnswer = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
+        $wantsVue = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
 
-        if($this->isPositiveAnswer($vueFrontendAnswer)) {
+        if($this->isPositiveAnswer($wantsVue)) {
             $router = $this->choice(
                 'Choose routing for your application?',
                 ['None', 'Vue Router', 'Inertia'],
@@ -29,6 +30,11 @@ class ScaffoldCommand extends Command
             $this->vue($router, $stateManager);
         }
 
+        $wantsDocker = $this->ask('Do you want Docker inside your project? (yes/no)', 'no');
+
+        if($this->isPositiveAnswer($wantsDocker)) {
+            $this->docker();
+        }
 
         $this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
         $this->comment('Additionally you cold run "php artisan serve" and "npm run watch" to serve your application.');
@@ -42,9 +48,20 @@ class ScaffoldCommand extends Command
      * @return void
      */
     private function vue(string $router, string $stateManager) {
-        (new Vue($router, $stateManager))::install();
+        Vue::install($router, $stateManager);
 
         $this->info('Vue scaffolding installed successfully.');
+    }
+
+    /**
+     * Install Docker scaffolding.
+     *
+     * @return void
+     */
+    private function docker() {
+        Docker::install();
+
+        $this->info('Docker scaffolding installed successfully.');
     }
 
     /**

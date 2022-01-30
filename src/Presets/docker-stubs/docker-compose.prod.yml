@@ -9,6 +9,7 @@ services:
       - app-data:/var/www
     depends_on:
       - db
+    entrypoint: [ "bash","./docker-compose/init.sh" ]
 
   db:
     image: mysql:5.7

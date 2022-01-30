@@ -10,11 +10,6 @@ class Vue extends Preset
     private static string $router;
     private static string $stateManager;
 
-    public function __construct(string $router, string $stateManager) {
-        static::$router = $router;
-        static::$stateManager = $stateManager;
-    }
-
     /**
      * Initiate Vue scaffolding.
      *
@@ -22,7 +17,12 @@ class Vue extends Preset
      * @param string $stateManager
      * @return void
      */
-    public static function install(): void {
+    public static function install(string $router, string $stateManager): void {
+        // Initializing fields
+        static::$router = $router;
+        static::$stateManager = $stateManager;
+
+        // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateNodePackages();
         static::updateNodePackages(false);

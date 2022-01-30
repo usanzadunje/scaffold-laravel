@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Usanzadunje\Scaffold\Presets\Docker;
 use Usanzadunje\Scaffold\Presets\Vue;
 use Usanzadunje\Scaffold\Presets\VueRouter;
+use Usanzadunje\Scaffold\Presets\Vuex;
 
 class ScaffoldCommand extends Command
 {
@@ -50,11 +51,17 @@ class ScaffoldCommand extends Command
      */
     private function vue(string $router, string $stateManager) {
         Vue::install();
+        $this->info('Vue scaffolding installed successfully.');
+
         if($router === 'Vue Router') {
             VueRouter::install();
+            $this->info('Vue Router scaffolding installed successfully.');
         }
 
-        $this->info('Vue scaffolding installed successfully.');
+        if($stateManager === 'Vuex') {
+            Vuex::install();
+            $this->info('Vuex scaffolding installed successfully.');
+        }
     }
 
     /**

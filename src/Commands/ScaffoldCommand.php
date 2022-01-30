@@ -12,9 +12,9 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
-        $wantsVue = $this->ask('Do you want Vue 3 as your frontend?');
+        $vueFrontendAnswer = $this->ask('Do you want Vue 3 as your frontend?');
 
-        if($this->isPositiveAnswer($wantsVue)) {
+        if($this->isPositiveAnswer($vueFrontendAnswer)) {
             $router = $this->choice(
                 'Choose routing for your application?',
                 ['None', 'Vue Router', 'Inertia'],
@@ -31,6 +31,7 @@ class ScaffoldCommand extends Command
 
 
         $this->comment('Please run "npm install && npm run dev" to compile your fresh scaffolding.');
+        $this->comment('Additionally you cold run "php artisan serve" and "npm run watch" to serve your application.');
 
         return self::SUCCESS;
     }

@@ -2,8 +2,8 @@
 
 namespace Usanzadunje\Scaffold\Presets;
 
-
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 
 class Vue extends Preset
 {
@@ -163,7 +163,22 @@ class Vue extends Preset
      * @return void
      */
     protected static function updateVuexBootstrapping() {
-        (new Filesystem())->copyDirectory(__DIR__ . '/vue-stubs/store', resource_path('js'));
+        File::copyDirectory(__DIR__ . '/vue-stubs/store', resource_path('js/store'));
+
+        $replaced = str_replace(
+            "const app = createApp(App)",
+            "const app = createApp(App)\n\t.use(store)",
+            file_get_contents('./resources/js/app.js')
+        );
+
+        file_put_contents(
+            './resources/js/app.js',
+            str_replace(
+                "import App from './App.vue';",
+                "import App from './App.vue';\n\nimport store from './store';",
+                $replaced
+            )
+        );
     }
 
     /**

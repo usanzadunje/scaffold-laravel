@@ -41,8 +41,6 @@ class Vue extends Preset
     /**
      * Ensure directories we need actually exists in project.
      *
-     * @param string $router
-     * @param string $stateManager
      * @return void
      */
     protected static function ensureDirectoriesExist(): void {

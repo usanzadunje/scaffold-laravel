@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Usanzadunje\Scaffold\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class ScaffoldCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'scaffold-laravel';
 
     public $description = 'My command';
 

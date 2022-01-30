@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "usanzadunje/scaffold-laravel",
+    "description": "Basic scaffoldings for Laravel applications.",
     "keywords": [
-        ":vendor_name",
+        "usanzadunje",
         "laravel",
-        ":package_slug"
+        "scaffold-laravel"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/usanzadunje/scaffold-laravel",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Dusan Djordjevic",
+            "email": "dusan.djordjevic.biz@gmail.com",
             "role": "Developer"
         }
     ],
@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Usanzadunje\\Scaffold\\": "src",
+            "Usanzadunje\\Scaffold\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Usanzadunje\\Scaffold\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -54,10 +54,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Usanzadunje\\Scaffold\\ScaffoldServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Scaffold": "Usanzadunje\\Scaffold\\Facades\\Scaffold"
             }
         }
     },

@@ -12,7 +12,8 @@ class Docker extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateBootstrapping();
@@ -25,8 +26,9 @@ class Docker extends Preset
      *
      * @return void
      */
-    protected static function ensureDirectoriesExist(): void {
-        (new Filesystem)->ensureDirectoryExists(base_path('docker-compose'));
+    protected static function ensureDirectoriesExist(): void
+    {
+        (new Filesystem())->ensureDirectoryExists(base_path('docker-compose'));
     }
 
     /**
@@ -34,7 +36,8 @@ class Docker extends Preset
      *
      * @return void
      */
-    protected static function updateBootstrapping(): void {
+    protected static function updateBootstrapping(): void
+    {
         File::copyDirectory(__DIR__ . '/docker-stubs/docker-compose', base_path('docker-compose'));
         copy(__DIR__ . '/docker-stubs/docker-compose.yml', base_path('docker-compose.yml'));
         copy(__DIR__ . '/docker-stubs/docker-compose.prod.yml', base_path('docker-compose.prod.yml'));
@@ -46,8 +49,9 @@ class Docker extends Preset
      *
      * @return void
      */
-    public static function updateEnvContent(): void {
-        if(file_exists(base_path('.env'))) {
+    public static function updateEnvContent(): void
+    {
+        if (file_exists(base_path('.env'))) {
             $replace = str_replace(
                 "DB_HOST=" . env('DB_HOST'),
                 "DB_HOST=db",
@@ -59,7 +63,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_USERNAME') === 'root') {
+        if (env('DB_USERNAME') === 'root') {
             $replace = str_replace(
                 "DB_USERNAME=" . env('DB_USERNAME'),
                 "DB_USERNAME=laravel",
@@ -71,7 +75,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_PASSWORD') === '') {
+        if (env('DB_PASSWORD') === '') {
             $replace = str_replace(
                 "DB_PASSWORD=",
                 "DB_PASSWORD=laravel",
@@ -83,7 +87,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_PORT') != '3306') {
+        if (env('DB_PORT') != '3306') {
             $replace = str_replace(
                 "DB_PORT=" . env('DB_PORT'),
                 "DB_PORT=3306",
@@ -101,8 +105,9 @@ class Docker extends Preset
      *
      * @return void
      */
-    public static function updateWebpackConfiguration(): void {
-        if(file_exists(base_path('webpack.mix.js'))) {
+    public static function updateWebpackConfiguration(): void
+    {
+        if (file_exists(base_path('webpack.mix.js'))) {
             $replace = str_replace(
                 "127.0.0.1:8000',",
                 "app_container',\n\thost: 'localhost',",
@@ -120,5 +125,3 @@ class Docker extends Preset
         }
     }
 }
-
-

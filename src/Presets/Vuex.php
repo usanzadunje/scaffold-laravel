@@ -12,7 +12,8 @@ class Vuex extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateNodePackages(false);
@@ -25,8 +26,9 @@ class Vuex extends Preset
      *
      * @return void
      */
-    protected static function ensureDirectoriesExist(): void {
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/store'));
+    protected static function ensureDirectoriesExist(): void
+    {
+        (new Filesystem())->ensureDirectoryExists(resource_path('js/store'));
     }
 
     /**
@@ -36,7 +38,8 @@ class Vuex extends Preset
      * @param string $configurationKey
      * @return array
      */
-    protected static function updatePackageArray(array $packages, string $configurationKey): array {
+    protected static function updatePackageArray(array $packages, string $configurationKey): array
+    {
         return [
                 "vuex" => "^4.0.2",
                 "vuex-persistedstate" => "^4.1.0",
@@ -48,7 +51,8 @@ class Vuex extends Preset
      *
      * @return void
      */
-    protected static function updateBootstrapping() {
+    protected static function updateBootstrapping()
+    {
         File::copyDirectory(__DIR__ . '/vue-stubs/store', resource_path('js/store'));
 
         $replaced = str_replace(
@@ -72,8 +76,9 @@ class Vuex extends Preset
      *
      * @return void
      */
-    protected static function updateWelcomeView() {
-        if(file_exists(resource_path('js/views/Welcome.vue'))) {
+    protected static function updateWelcomeView()
+    {
+        if (file_exists(resource_path('js/views/Welcome.vue'))) {
             $replace = str_replace(
                 "import { useRouter }       from 'vue-router';",
                 "import { useRouter }       from 'vue-router';\nimport { useStore }       from 'vuex';",

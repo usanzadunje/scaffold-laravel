@@ -16,7 +16,8 @@ class ScaffoldCommand extends Command
 
     public $description = 'Scaffold your application based on provided templates.';
 
-    public function handle(): int {
+    public function handle(): int
+    {
         // Defaults
         $this->installBrowserSync();
         Vite::install();
@@ -33,7 +34,8 @@ class ScaffoldCommand extends Command
      *
      * @return void
      */
-    public function installBrowserSync(): void {
+    public function installBrowserSync(): void
+    {
         BrowserSync::install();
         $this->info('Webpack BrowserSync installed successfully.');
     }
@@ -43,10 +45,11 @@ class ScaffoldCommand extends Command
      *
      * @return bool
      */
-    public function checkIfUserWantsVue(): bool {
+    public function checkIfUserWantsVue(): bool
+    {
         $wantsVue = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
 
-        if($wantsVue = $this->isPositiveAnswer($wantsVue)) {
+        if ($wantsVue = $this->isPositiveAnswer($wantsVue)) {
             $router = $this->choice(
                 'Choose routing for your application?',
                 ['None', 'Vue Router', 'Inertia'],
@@ -69,10 +72,11 @@ class ScaffoldCommand extends Command
      *
      * @return bool
      */
-    public function checkIfUserWantsDocker(): bool {
+    public function checkIfUserWantsDocker(): bool
+    {
         $wantsDocker = $this->ask('Do you want Docker inside your project? (yes/no)', 'no');
 
-        if($wantsDocker = $this->isPositiveAnswer($wantsDocker)) {
+        if ($wantsDocker = $this->isPositiveAnswer($wantsDocker)) {
             $this->docker();
         }
 
@@ -84,16 +88,17 @@ class ScaffoldCommand extends Command
      *
      * @return void
      */
-    private function vue(string $router, string $stateManager) {
+    private function vue(string $router, string $stateManager)
+    {
         Vue::install();
         $this->info('Vue scaffolding installed successfully.');
 
-        if($router === 'Vue Router') {
+        if ($router === 'Vue Router') {
             VueRouter::install();
             $this->info('Vue Router scaffolding installed successfully.');
         }
 
-        if($stateManager === 'Vuex') {
+        if ($stateManager === 'Vuex') {
             Vuex::install();
             $this->info('Vuex scaffolding installed successfully.');
         }
@@ -104,7 +109,8 @@ class ScaffoldCommand extends Command
      *
      * @return void
      */
-    private function docker() {
+    private function docker()
+    {
         Docker::install();
 
         $this->info('Docker scaffolding installed successfully.');
@@ -116,7 +122,8 @@ class ScaffoldCommand extends Command
      * @param string $answer
      * @return bool
      */
-    private function isPositiveAnswer(string $answer): bool {
+    private function isPositiveAnswer(string $answer): bool
+    {
         return in_array($answer, ['yes', 'ye', 'y', 1]);
     }
 }

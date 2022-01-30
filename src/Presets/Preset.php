@@ -2,7 +2,6 @@
 
 namespace Usanzadunje\Scaffold\Presets;
 
-
 use Illuminate\Filesystem\Filesystem;
 
 class Preset
@@ -13,8 +12,9 @@ class Preset
      * @param bool $dev
      * @return void
      */
-    protected static function updateNodePackages(bool $dev = true): void {
-        if(!file_exists(base_path('package.json'))) {
+    protected static function updateNodePackages(bool $dev = true): void
+    {
+        if (! file_exists(base_path('package.json'))) {
             return;
         }
 
@@ -40,8 +40,9 @@ class Preset
      *
      * @return void
      */
-    protected static function removeNodeModules() {
-        tap(new Filesystem, function(Filesystem $files) {
+    protected static function removeNodeModules()
+    {
+        tap(new Filesystem(), function (Filesystem $files) {
             $files->deleteDirectory(base_path('node_modules'));
 
             $files->delete(base_path('package-lock.json'));

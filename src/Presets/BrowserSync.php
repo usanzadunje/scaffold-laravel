@@ -9,7 +9,8 @@ class BrowserSync extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::updateNodePackages();
         static::updateWebpackConfiguration();
@@ -21,7 +22,8 @@ class BrowserSync extends Preset
      * @param array $packages
      * @return array
      */
-    protected static function updatePackageArray(array $packages): array {
+    protected static function updatePackageArray(array $packages): array
+    {
         return [
                 "browser-sync" => "^2.27.7",
                 "browser-sync-webpack-plugin" => "^2.3.0",
@@ -33,7 +35,8 @@ class BrowserSync extends Preset
      *
      * @return void
      */
-    protected static function updateWebpackConfiguration() {
+    protected static function updateWebpackConfiguration()
+    {
         copy(__DIR__ . '/bs-stubs/webpack.mix.js', base_path('webpack.mix.js'));
     }
 }

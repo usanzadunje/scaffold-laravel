@@ -11,7 +11,8 @@ class Vue extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateNodePackages();
@@ -27,11 +28,12 @@ class Vue extends Preset
      *
      * @return void
      */
-    protected static function ensureDirectoriesExist(): void {
-        (new Filesystem)->ensureDirectoryExists(resource_path('js'));
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/components'));
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/composables'));
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/views'));
+    protected static function ensureDirectoriesExist(): void
+    {
+        (new Filesystem())->ensureDirectoryExists(resource_path('js'));
+        (new Filesystem())->ensureDirectoryExists(resource_path('js/components'));
+        (new Filesystem())->ensureDirectoryExists(resource_path('js/composables'));
+        (new Filesystem())->ensureDirectoryExists(resource_path('js/views'));
     }
 
     /**
@@ -41,7 +43,8 @@ class Vue extends Preset
      * @param string $configurationKey
      * @return array
      */
-    protected static function updatePackageArray(array $packages, string $configurationKey): array {
+    protected static function updatePackageArray(array $packages, string $configurationKey): array
+    {
         $vuePackages = [
             'dependencies' => [
                 "vue" => "^3.2.29",
@@ -61,7 +64,8 @@ class Vue extends Preset
      *
      * @return void
      */
-    protected static function updateWebpackConfiguration() {
+    protected static function updateWebpackConfiguration()
+    {
         copy(__DIR__ . '/vue-stubs/webpack.mix.js', base_path('webpack.mix.js'));
     }
 
@@ -70,7 +74,8 @@ class Vue extends Preset
      *
      * @return void
      */
-    protected static function updateBootstrapping() {
+    protected static function updateBootstrapping()
+    {
         copy(__DIR__ . '/vue-stubs/app.js', resource_path('js/app.js'));
 
         (new Filesystem())->delete(resource_path('js/bootstrap.js'));
@@ -92,7 +97,8 @@ class Vue extends Preset
      *
      * @return void
      */
-    protected static function updateComponent() {
+    protected static function updateComponent()
+    {
         copy(__DIR__ . '/vue-stubs/App.vue', resource_path('js/App.vue'));
     }
 }

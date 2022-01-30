@@ -2,9 +2,6 @@
 
 namespace Usanzadunje\Scaffold\Presets;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\File;
-
 class Vite extends Preset
 {
     /**
@@ -12,7 +9,8 @@ class Vite extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::updateNodePackages();
     }
@@ -23,7 +21,8 @@ class Vite extends Preset
      * @param array $packages
      * @return array
      */
-    protected static function updatePackageArray(array $packages): array {
+    protected static function updatePackageArray(array $packages): array
+    {
         static::unsetPackagesFromPackageArray($packages);
         // INSTALL VITE
 
@@ -36,12 +35,11 @@ class Vite extends Preset
      * @param array $packages
      * @return void
      */
-    private static function unsetPackagesFromPackageArray(array &$packages): void {
+    private static function unsetPackagesFromPackageArray(array &$packages): void
+    {
         $packagesToRemove = ['laravel-mix', 'browser-sync', 'browser-sync-webpack-plugin'];
-        foreach($packagesToRemove as $key){
+        foreach ($packagesToRemove as $key) {
             unset($packages[$key]);
         }
     }
 }
-
-

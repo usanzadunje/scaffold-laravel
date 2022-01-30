@@ -11,7 +11,8 @@ class VueRouter extends Preset
      *
      * @return void
      */
-    public static function install(): void {
+    public static function install(): void
+    {
         // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateNodePackages(false);
@@ -24,8 +25,9 @@ class VueRouter extends Preset
      *
      * @return void
      */
-    protected static function ensureDirectoriesExist(): void {
-        (new Filesystem)->ensureDirectoryExists(resource_path('js/router'));
+    protected static function ensureDirectoriesExist(): void
+    {
+        (new Filesystem())->ensureDirectoryExists(resource_path('js/router'));
     }
 
     /**
@@ -34,7 +36,8 @@ class VueRouter extends Preset
      * @param array $packages
      * @return array
      */
-    protected static function updatePackageArray(array $packages): array {
+    protected static function updatePackageArray(array $packages): array
+    {
         return [
                 "vue-router" => "^4.0.12",
             ] + $packages;
@@ -45,7 +48,8 @@ class VueRouter extends Preset
      *
      * @return void
      */
-    protected static function updateBootstrapping() {
+    protected static function updateBootstrapping()
+    {
         copy(__DIR__ . '/vue-stubs/router/app.js', resource_path('js/app.js'));
         copy(__DIR__ . '/vue-stubs/router/Welcome.vue', resource_path('js/views/Welcome.vue'));
         copy(__DIR__ . '/vue-stubs/router/index.js', resource_path('js/router/index.js'));
@@ -56,7 +60,8 @@ class VueRouter extends Preset
      *
      * @return void
      */
-    protected static function updateComponent() {
+    protected static function updateComponent()
+    {
         file_put_contents(
             resource_path('js/App.vue'),
             str_replace(

@@ -6,9 +6,9 @@ use Illuminate\Console\Command;
 
 class ScaffoldCommand extends Command
 {
-    public $signature = 'scaffold-laravel';
+    public $signature = 'scaffoldl';
 
-    public $description = 'My command';
+    public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int
     {

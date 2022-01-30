@@ -15,7 +15,7 @@ class Vuex extends Preset
     public static function install(): void {
         // Bootstrapping
         static::ensureDirectoriesExist();
-        static::updateNodePackages();
+        static::updateNodePackages(false);
         static::updateBootstrapping();
         static::updateWelcomeView();
     }

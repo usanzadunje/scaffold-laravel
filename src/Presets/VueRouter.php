@@ -29,7 +29,7 @@ class VueRouter extends Preset
     }
 
     /**
-     * Add node packages for vue and its assets.
+     * Add node packages for Vue Router.
      *
      * @param array $packages
      * @return array

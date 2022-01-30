@@ -30,7 +30,7 @@ class Vuex extends Preset
     }
 
     /**
-     * Add node packages for vue and its assets.
+     * Add node packages for Vuex.
      *
      * @param array $packages
      * @param string $configurationKey

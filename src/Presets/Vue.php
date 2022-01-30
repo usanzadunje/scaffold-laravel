@@ -35,7 +35,7 @@ class Vue extends Preset
     }
 
     /**
-     * Add node packages for vue and its assets.
+     * Add node packages for Vue.
      *
      * @param array $packages
      * @param string $configurationKey

@@ -5,6 +5,7 @@ namespace Usanzadunje\Scaffold\Commands;
 use Illuminate\Console\Command;
 use Usanzadunje\Scaffold\Presets\BrowserSync;
 use Usanzadunje\Scaffold\Presets\Docker;
+use Usanzadunje\Scaffold\Presets\Vite;
 use Usanzadunje\Scaffold\Presets\Vue;
 use Usanzadunje\Scaffold\Presets\VueRouter;
 use Usanzadunje\Scaffold\Presets\Vuex;
@@ -16,7 +17,11 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
+        // Defaults
         $this->installBrowserSync();
+        Vite::install();
+
+        // Ask user for permission
         $this->checkIfUserWantsVue();
         $this->checkIfUserWantsDocker();
 

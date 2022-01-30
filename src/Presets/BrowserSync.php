@@ -5,7 +5,7 @@ namespace Usanzadunje\Scaffold\Presets;
 class BrowserSync extends Preset
 {
     /**
-     * Initiate Vue scaffolding.
+     * Initiate BrowserSync scaffolding.
      *
      * @return void
      */
@@ -16,7 +16,7 @@ class BrowserSync extends Preset
     }
 
     /**
-     * Add node packages for vue and its assets.
+     * Add node packages for BrowserSync.
      *
      * @param array $packages
      * @return array

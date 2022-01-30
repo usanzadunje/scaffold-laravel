@@ -12,7 +12,7 @@ class ScaffoldCommand extends Command
     public $description = 'Scaffold your application based on provided templates.';
 
     public function handle(): int {
-        $vueFrontendAnswer = $this->ask('Do you want Vue 3 as your frontend?', 'no');
+        $vueFrontendAnswer = $this->ask('Do you want Vue 3 as your frontend? (yes/no)', 'no');
 
         if($this->isPositiveAnswer($vueFrontendAnswer)) {
             $router = $this->choice(

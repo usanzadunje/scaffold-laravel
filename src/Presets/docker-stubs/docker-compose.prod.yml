@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  app:
+    image: usanzadunje/laravel-prod
+    container_name: app_container
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - app-data:/var/www
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: database_container
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_NAME: mysql
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_container
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - app-data:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+
+volumes:
+  mysql-data:
+  app-data:

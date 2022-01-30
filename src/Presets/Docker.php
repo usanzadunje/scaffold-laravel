@@ -13,8 +13,10 @@ class Docker extends Preset
      * @return void
      */
     public static function install(): void {
+        // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateBootstrapping();
+        static::updateEnvContent();
     }
 
     /**
@@ -36,5 +38,55 @@ class Docker extends Preset
         copy(__DIR__ . '/docker-stubs/docker-compose.yml', base_path('docker-compose.yml'));
         copy(__DIR__ . '/docker-stubs/docker-compose.prod.yml', base_path('docker-compose.prod.yml'));
         copy(__DIR__ . '/docker-stubs/.dockerignore', base_path('.dockerignore'));
+    }
+
+    public static function updateEnvContent() {
+        if(file_exists(base_path('.env'))) {
+            $replace = str_replace(
+                "DB_HOST=" . env('DB_HOST'),
+                "DB_HOST=db",
+                file_get_contents(base_path('.env'))
+            );
+            file_put_contents(
+                base_path('.env'),
+                $replace
+            );
+        }
+
+        if(env('DB_USERNAME') === 'root') {
+            $replace = str_replace(
+                "DB_USERNAME=" . env('DB_USERNAME'),
+                "DB_USERNAME=laravel",
+                file_get_contents(base_path('.env'))
+            );
+            file_put_contents(
+                base_path('.env'),
+                $replace
+            );
+        }
+
+        if(env('DB_PASSWORD') === '') {
+            $replace = str_replace(
+                "DB_PASSWORD=",
+                "DB_PASSWORD=laravel",
+                file_get_contents(base_path('.env'))
+            );
+            file_put_contents(
+                base_path('.env'),
+                $replace
+            );
+        }
+
+        if(env('DB_PORT') != '3306') {
+            $replace = str_replace(
+                "DB_PORT=" . env('DB_PORT'),
+                "DB_PORT=3306",
+                file_get_contents(base_path('.env'))
+            );
+            file_put_contents(
+                base_path('.env'),
+                $replace
+            );
+        }
     }
 }

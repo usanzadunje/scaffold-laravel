@@ -74,29 +74,29 @@ class Vuex extends Preset
      */
     protected static function updateWelcomeView() {
         if(file_exists(resource_path('js/views/Welcome.vue'))) {
-            $replaced = str_replace(
+            $replace = str_replace(
                 "import { useRouter }       from 'vue-router';",
                 "import { useRouter }       from 'vue-router';\nimport { useStore }       from 'vuex';",
                 file_get_contents(resource_path('js/views/Welcome.vue'))
             );
-            $replaced = str_replace(
+            $replace = str_replace(
                 "const router = useRouter();",
                 "const router = useRouter();\n\t\tconst store = useStore();",
-                $replaced
+                $replace
             );
-            $replaced = str_replace(
+            $replace = str_replace(
                 "router,",
                 "router,\n\t\t\tstore,",
-                $replaced
+                $replace
             );
-            $replaced = str_replace(
+            $replace = str_replace(
                 "Welcome!!!",
                 "Welcome!!!\n\t\t<div>Testing vuex store: {{ store.getters['module/test']}}</div>",
-                $replaced
+                $replace
             );
             file_put_contents(
                 resource_path('js/views/Welcome.vue'),
-                $replaced
+                $replace
             );
         }
     }

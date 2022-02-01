@@ -10,10 +10,10 @@ use Usanzadunje\Scaffold\Helpers\ViteAssets;
 
 class ScaffoldServiceProvider extends PackageServiceProvider
 {
-    public function boot()
-    {
-        Blade::directive('vite', [ViteAssets::class, 'generate']);
-    }
+    //public function boot()
+    //{
+    //    Blade::directive('vite', [ViteAssets::class, 'generate']);
+    //}
 
     public function configurePackage(Package $package): void
     {

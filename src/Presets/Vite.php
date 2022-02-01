@@ -78,12 +78,12 @@ class Vite extends Preset
             (new Filesystem())->delete(base_path('webpack.config.js'));
         }
 
-        if(file_exists(resource_path('js/views/app.blade.php')))
+        if(file_exists(resource_path('views/app.blade.php')))
         {
             $replaced = str_replace(
                 "<link href=\"{{ mix('/css/app.css') }}\" rel=\"stylesheet\"/>",
                 "",
-                file_get_contents(resource_path('js/app.js'))
+                file_get_contents(resource_path('views/app.blade.php'))
             );
             $replaced = str_replace(
                 "<script src=\"{{ mix('/js/app.js') }}\" defer></script>",
@@ -92,13 +92,20 @@ class Vite extends Preset
             );
 
             file_put_contents(
-                resource_path('js/views/app.blade.php'),
+                resource_path('views/app.blade.php'),
                 $replaced
             );
         }
 
         if(static::$isVueInstalled)
         {
+            $appFile = file_get_contents(resource_path('js/app.js'));
+
+            file_put_contents(
+                resource_path('js/app.js'),
+                "import '../css/app.css';\n\n" . $appFile
+            );
+
             $replaced = str_replace(
                 "from 'vite';",
                 "from 'vite';\nimport vue              from '@vitejs/plugin-vue';",
@@ -107,7 +114,7 @@ class Vite extends Preset
 
             $replaced = str_replace(
                 "'axios',",
-                "'vue',\n\t\t\taxios',",
+                "'vue',\n\t\t\t'axios',",
                 $replaced
             );
 
@@ -118,33 +125,33 @@ class Vite extends Preset
             );
 
             file_put_contents(
-                resource_path('js/views/app.blade.php'),
+                base_path('vite.config.js'),
                 $replaced
             );
         }
         if(static::$isVueRouterInstalled)
-    {
-        $replaced = str_replace(
-            "'vue',",
-            "'vue',\n\t\t\t'vue-router',",
-            file_get_contents(base_path('vite.config.js'))
-        );
-
-        file_put_contents(
-            resource_path('js/views/app.blade.php'),
-            $replaced
-        );
-    }
-        if(static::$isVuexInstalled)
         {
             $replaced = str_replace(
                 "'vue',",
-                "'vue',\n\t\t\t'vuex',\n\t\t\t'vuex-persistedstate'",
+                "'vue',\n\t\t\t'vue-router',",
                 file_get_contents(base_path('vite.config.js'))
             );
 
             file_put_contents(
-                resource_path('js/views/app.blade.php'),
+                base_path('vite.config.js'),
+                $replaced
+            );
+        }
+        if(static::$isVuexInstalled)
+        {
+            $replaced = str_replace(
+                "'vue',",
+                "'vue',\n\t\t\t'vuex',\n\t\t\t'vuex-persistedstate',",
+                file_get_contents(base_path('vite.config.js'))
+            );
+
+            file_put_contents(
+                base_path('vite.config.js'),
                 $replaced
             );
         }
@@ -158,7 +165,7 @@ class Vite extends Preset
      */
     private static function unsetWebpackPackagesFromPackageArray(array &$packages): void
     {
-        $packagesToRemove = ['laravel-mix', 'browser-sync', 'browser-sync-webpack-plugin'];
+        $packagesToRemove = ['laravel-mix', 'browser-sync', 'browser-sync-webpack-plugin', 'vue-loader'];
         foreach($packagesToRemove as $key)
         {
             unset($packages[$key]);

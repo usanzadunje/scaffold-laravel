@@ -23,11 +23,9 @@ class Preset
         $jsonContent = json_decode(file_get_contents(base_path('package.json')), true);
 
         $jsonContent[$configurationKey] = static::updateScriptsArray(
-            array_key_exists($configurationKey, $jsonContent) ? $jsonContent[$configurationKey] : [],
-            $configurationKey
-        );
+            array_key_exists($configurationKey, $jsonContent) ? $jsonContent[$configurationKey] : []);
 
-        ksort($packages[$configurationKey]);
+        ksort($jsonContent[$configurationKey]);
 
         file_put_contents(
             base_path('package.json'),
@@ -50,18 +48,18 @@ class Preset
 
         $configurationKey = $dev ? 'devDependencies' : 'dependencies';
 
-        $packages = json_decode(file_get_contents(base_path('package.json')), true);
+        $jsonContent = json_decode(file_get_contents(base_path('package.json')), true);
 
-        $packages[$configurationKey] = static::updatePackageArray(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
+        $jsonContent[$configurationKey] = static::updatePackageArray(
+            array_key_exists($configurationKey, $jsonContent) ? $jsonContent[$configurationKey] : [],
             $configurationKey
         );
 
-        ksort($packages[$configurationKey]);
+        ksort($jsonContent[$configurationKey]);
 
         file_put_contents(
             base_path('package.json'),
-            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
+            json_encode($jsonContent, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
         );
     }
 

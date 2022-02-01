@@ -51,51 +51,55 @@ class Docker extends Preset
      */
     public static function updateEnvContent(): void
     {
-        if (file_exists(base_path('.env'))) {
-            $replace = str_replace(
+        if(file_exists(base_path('.env')))
+        {
+            $replaced = str_replace(
                 "DB_HOST=" . env('DB_HOST'),
                 "DB_HOST=db",
                 file_get_contents(base_path('.env'))
             );
             file_put_contents(
                 base_path('.env'),
-                $replace
+                $replaced
             );
         }
 
-        if (env('DB_USERNAME') === 'root') {
-            $replace = str_replace(
-                "DB_USERNAME=" . env('DB_USERNAME'),
+        if(env('DB_USERNAME') === 'root')
+        {
+            $replaced = str_replace(
+                "DB_USERNAME=root",
                 "DB_USERNAME=laravel",
                 file_get_contents(base_path('.env'))
             );
             file_put_contents(
                 base_path('.env'),
-                $replace
+                $replaced
             );
         }
 
-        if (env('DB_PASSWORD') === '') {
-            $replace = str_replace(
+        if(env('DB_PASSWORD') === '')
+        {
+            $replaced = str_replace(
                 "DB_PASSWORD=",
                 "DB_PASSWORD=laravel",
                 file_get_contents(base_path('.env'))
             );
             file_put_contents(
                 base_path('.env'),
-                $replace
+                $replaced
             );
         }
 
-        if (env('DB_PORT') != '3306') {
-            $replace = str_replace(
+        if(env('DB_PORT') != '3306')
+        {
+            $replaced = str_replace(
                 "DB_PORT=" . env('DB_PORT'),
                 "DB_PORT=3306",
                 file_get_contents(base_path('.env'))
             );
             file_put_contents(
                 base_path('.env'),
-                $replace
+                $replaced
             );
         }
     }
@@ -107,20 +111,32 @@ class Docker extends Preset
      */
     public static function updateWebpackConfiguration(): void
     {
-        if (file_exists(base_path('webpack.mix.js'))) {
-            $replace = str_replace(
-                "127.0.0.1:8000',",
-                "app_container',\n\thost: 'localhost',",
+        if(
+            file_exists(base_path('webpack.mix.js')) &&
+            preg_match('/mix.browserSync/', file_get_contents(base_path('webpack.mix.js')))
+        )
+        {
+            $matches = null;
+            preg_match("/proxy: '([^']+)'/", file_get_contents(base_path('webpack.mix.js')), $matches);
+
+            $replaced = str_replace(
+                'mix.browserSync({',
+                "mix.browserSync({\n\thost: 'localhost',",
                 file_get_contents(base_path('webpack.mix.js'))
             );
-            $replace = str_replace(
+            $replaced = str_replace(
+                $matches[1],
+                "app_container",
+                $replaced
+            );
+            $replaced = str_replace(
                 "open: true",
                 "open: false",
-                $replace
+                $replaced
             );
             file_put_contents(
                 base_path('webpack.mix.js'),
-                $replace
+                $replaced
             );
         }
     }

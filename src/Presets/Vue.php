@@ -51,6 +51,8 @@ class Vue extends Preset
                 "path" => "^0.12.7",
             ],
             'devDependencies' => [
+                "browser-sync" => "^2.27.7",
+                "browser-sync-webpack-plugin" => "^2.3.0",
                 "@vue/compiler-sfc" => "^3.2.29",
                 "vue-loader" => "^16.8.3",
             ],

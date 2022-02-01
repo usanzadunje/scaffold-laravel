@@ -3,7 +3,6 @@
 namespace Usanzadunje\Scaffold\Commands;
 
 use Illuminate\Console\Command;
-use Usanzadunje\Scaffold\Presets\BrowserSync;
 use Usanzadunje\Scaffold\Presets\Docker;
 use Usanzadunje\Scaffold\Presets\Vite;
 use Usanzadunje\Scaffold\Presets\Vue;
@@ -12,16 +11,23 @@ use Usanzadunje\Scaffold\Presets\Vuex;
 
 class ScaffoldCommand extends Command
 {
-    public $signature = 'scaffold {preset}';
+    //public $signature = 'scaffold {preset: Name of the preset to scaffold application with} {--m|middleware: Whether middleware scaffolding should be included with vue-router}';
+    public $signature = 'scaffold {preset} {--m|middleware}';
 
     public $description = 'Scaffold your application based on provided templates.';
 
-    public function handle(): int {
-        $this->browserSync();
-
-        switch($this->argument('preset')){
+    public function handle(): int
+    {
+        switch($this->argument('preset'))
+        {
             case 'vue':
-                $this->checkIfUserWantsOtherVueAssets();
+                $this->vue();
+                break;
+            case 'vue-router':
+                $this->vueRouter();
+                break;
+            case 'vuex':
+                $this->vuex();
                 break;
             case 'vite':
                 // vite
@@ -35,21 +41,15 @@ class ScaffoldCommand extends Command
     }
 
     /**
-     * Installing BrowserSync for webpack.
+     * Install Vue scaffolding.
      *
      * @return void
      */
-    public function browserSync(): void {
-        BrowserSync::install();
-        $this->info('Webpack BrowserSync installed successfully.');
-    }
+    private function vue()
+    {
+        Vue::install();
+        $this->info('Vue scaffolding installed successfully.');
 
-    /**
-     * Asking user and checking whether they are going to use Vue as frontend.
-     *
-     * @return void
-     */
-    public function checkIfUserWantsOtherVueAssets(): void {
         $router = $this->choice(
             'Choose routing for your application',
             ['None', 'Vue Router', 'Inertia'],
@@ -61,27 +61,37 @@ class ScaffoldCommand extends Command
             0,
         );
 
-        $this->vue($router, $stateManager);
+        if($router === 'Vue Router')
+        {
+            $this->vueRouter();
+        }
+
+        if($stateManager === 'Vuex')
+        {
+            $this->vuex();
+        }
     }
 
     /**
-     * Install Vue scaffolding.
+     * Install Vue Router scaffolding.
      *
      * @return void
      */
-    private function vue(string $router, string $stateManager) {
-        Vue::install();
-        $this->info('Vue scaffolding installed successfully.');
+    private function vueRouter()
+    {
+        VueRouter::install($this->option('middleware'));
+        $this->info('Vue Router scaffolding installed successfully.');
+    }
 
-        if($router === 'Vue Router') {
-            VueRouter::install();
-            $this->info('Vue Router scaffolding installed successfully.');
-        }
-
-        if($stateManager === 'Vuex') {
-            Vuex::install();
-            $this->info('Vuex scaffolding installed successfully.');
-        }
+    /**
+     * Install Vuex scaffolding.
+     *
+     * @return void
+     */
+    private function vuex()
+    {
+        Vuex::install();
+        $this->info('Vuex scaffolding installed successfully.');
     }
 
     /**
@@ -89,19 +99,21 @@ class ScaffoldCommand extends Command
      *
      * @return void
      */
-    private function docker() {
+    private function docker()
+    {
         Docker::install();
 
         $this->info('Docker scaffolding installed successfully.');
     }
-
-    /**
-     * Check whether user selected positive answer.
-     *
-     * @param string $answer
-     * @return bool
-     */
-    private function isPositiveAnswer(string $answer): bool {
-        return in_array($answer, ['yes', 'ye', 'y', 1]);
-    }
+    //
+    ///**
+    // * Check whether user selected positive answer.
+    // *
+    // * @param string $answer
+    // * @return bool
+    // */
+    //private function isPositiveAnswer(string $answer): bool
+    //{
+    //    return in_array($answer, ['yes', 'ye', 'y', 1]);
+    //}
 }

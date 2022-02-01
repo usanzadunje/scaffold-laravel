@@ -53,7 +53,7 @@ class Vuex extends Preset
      */
     protected static function updateBootstrapping()
     {
-        $matches = [];
+        $matches = null;
         preg_match('/createApp\(([^)]+)\)/', file_get_contents(resource_path('js/app.js')), $matches);
 
         File::copyDirectory(__DIR__ . '/vue-stubs/store', resource_path('js/store'));

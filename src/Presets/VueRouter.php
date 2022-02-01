@@ -3,20 +3,22 @@
 namespace Usanzadunje\Scaffold\Presets;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 
 class VueRouter extends Preset
 {
     /**
      * Initiate Vue Router scaffolding.
      *
+     * @param $wantsMiddleware
      * @return void
      */
-    public static function install(): void
+    public static function install($wantsMiddleware): void
     {
         // Bootstrapping
         static::ensureDirectoriesExist();
         static::updateNodePackages(false);
-        static::updateBootstrapping();
+        static::updateBootstrapping($wantsMiddleware);
         static::updateView();
     }
 
@@ -46,11 +48,12 @@ class VueRouter extends Preset
     /**
      * Bootstrap Vue app with Vue Router.
      *
+     * @param bool $wantsMiddleware
      * @return void
      */
-    protected static function updateBootstrapping()
+    protected static function updateBootstrapping(bool $wantsMiddleware)
     {
-        $matches = [];
+        $matches = null;
         preg_match('/createApp\(([^)]+)\)/', file_get_contents(resource_path('js/app.js')), $matches);
 
         copy(__DIR__ . '/vue-stubs/router/Welcome.vue', resource_path('js/views/Welcome.vue'));
@@ -58,7 +61,7 @@ class VueRouter extends Preset
 
         $replaced = str_replace(
             "from 'vue';",
-            "from 'vue';\n\nimport router from './router';\n\nimport ExampleApp from './ExampleApp.vue';",
+            "from 'vue';\n\nimport ExampleApp from './ExampleApp.vue';\n\nimport router from './router';",
             file_get_contents(resource_path('js/app.js'))
         );
 
@@ -78,6 +81,11 @@ class VueRouter extends Preset
             resource_path('js/app.js'),
             $replaced
         );
+
+        if($wantsMiddleware)
+        {
+            static::generateMiddlewareScaffolding();
+        }
     }
 
     /**
@@ -88,5 +96,43 @@ class VueRouter extends Preset
     protected static function updateView()
     {
         copy(__DIR__ . '/vue-stubs/router/ExampleApp.vue', resource_path('js/ExampleApp.vue'));
+    }
+
+    /**
+     * Generates new and changes existing content to adjust it for middleware usage.
+     *
+     * @return void
+     */
+    private static function generateMiddlewareScaffolding()
+    {
+        $middlewareNavigationGuard = file_get_contents(__DIR__ . '/vue-stubs/router/middlewareNavigationGuard.js');
+
+        copy(__DIR__ . '/vue-stubs/router/middlewarePipeline.js', resource_path('js/router/middlewarePipeline.js'));
+        File::copyDirectory(__DIR__ . '/vue-stubs/router/middlewares', resource_path('js/middlewares'));
+
+        $replaced = str_replace(
+            "from 'vue-router';",
+            "from 'vue-router';
+            \nimport middlewarePipeline from './middlewarePipeline';
+            \nimport middleware from '@/middlewares/middleware';",
+            file_get_contents(resource_path('js/router/index.js'))
+        );
+
+        $replaced = str_replace(
+            "name: 'welcome',",
+            "name: 'welcome',\n\t\tmeta: {\n\t\t\tmiddleware: [middleware],\n\t\t},",
+            $replaced
+        );
+
+        $replaced = str_replace(
+            "export default router;",
+            "$middlewareNavigationGuard\n\nexport default router;",
+            $replaced
+        );
+
+        file_put_contents(
+            resource_path('js/router/index.js'),
+            $replaced
+        );
     }
 }

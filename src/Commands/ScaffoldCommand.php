@@ -116,7 +116,10 @@ class ScaffoldCommand extends Command
      */
     private function docker()
     {
-        if($this->isPositiveAnswer($this->ask('Do you want browser sync webpack plugin as well?', 'no')))
+        if(
+            !file_exists(base_path('vite.config.js')) &&
+            $this->isPositiveAnswer($this->ask('Do you want browser sync webpack plugin as well?', 'no'))
+        )
         {
             BrowserSync::install();
 

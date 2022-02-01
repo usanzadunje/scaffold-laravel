@@ -188,13 +188,25 @@ class Docker extends Preset
             file_get_contents(base_path('docker-compose.yml'))
         );
         $replaced = str_replace(
-            "command: php artisan serve --host=0.0.0.0 --port=80",
-            "ports:\n\t\t\t- \"3000:3000\"\n\t\tcommand: php artisan serve --host=0.0.0.0 --port=3000",
+            "entrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
+            "ports:\n\t\t\t- \"3000:3000\"\n\t\tentrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
             $replaced
         );
 
         file_put_contents(
             base_path('docker-compose.yml'),
+            $replaced
+        );
+
+        // Replacing serving port
+        $replaced = str_replace(
+            "--port=80",
+            "--port=3000",
+            file_get_contents(base_path('docker-compose/initDev.sh'))
+        );
+
+        file_put_contents(
+            base_path('docker-compose/initDev.sh'),
             $replaced
         );
     }

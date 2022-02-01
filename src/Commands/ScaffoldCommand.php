@@ -29,7 +29,7 @@ class ScaffoldCommand extends Command
                 $this->vuex();
                 break;
             case 'vite':
-                // vite
+                $this->vite();
                 break;
             case 'docker':
                 $this->docker();
@@ -54,7 +54,7 @@ class ScaffoldCommand extends Command
             ['None', 'Vue Router', 'Inertia'],
             0,
         );
-        
+
         if($router === 'Vue Router')
         {
             $this->vueRouter();
@@ -94,6 +94,18 @@ class ScaffoldCommand extends Command
     {
         Vuex::install();
         $this->info('Vuex scaffolding installed successfully.');
+    }
+
+    /**
+     * Install Vite scaffolding.
+     *
+     * @return void
+     */
+    private function vite()
+    {
+        Vite::install();
+
+        $this->info('Vite scaffolding installed successfully.');
     }
 
     /**

@@ -188,8 +188,8 @@ class Docker extends Preset
             file_get_contents(base_path('docker-compose.yml'))
         );
         $replaced = str_replace(
-            "entrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
-            "ports:\n      - \"3000:3000\"\n    entrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
+            "8080:8080",
+            "3000:3000",
             $replaced
         );
 

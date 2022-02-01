@@ -35,6 +35,9 @@ class ScaffoldCommand extends Command
             case 'docker':
                 $this->docker();
                 break;
+            case 'browser-sync':
+                $this->browserSync();
+                break;
             case 'all':
                 $this->vue();
                 $this->vite();
@@ -155,7 +158,7 @@ class ScaffoldCommand extends Command
             $this->vite();
         }
 
-        if($environment === 'Browser Sync')
+        if($environment === 'Browser Sync[Webpack]')
         {
             $this->browserSync();
         }

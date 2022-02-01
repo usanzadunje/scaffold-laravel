@@ -189,7 +189,7 @@ class Docker extends Preset
         );
         $replaced = str_replace(
             "entrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
-            "ports:\n\t\t\t- \"3000:3000\"\n\t\tentrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
+            "ports:\n      - \"3000:3000\"\n    entrypoint: [ \"bash\",\"./docker-compose/initDev.sh\" ]",
             $replaced
         );
 

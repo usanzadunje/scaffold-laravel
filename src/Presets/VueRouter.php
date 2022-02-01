@@ -50,9 +50,29 @@ class VueRouter extends Preset
      */
     protected static function updateBootstrapping()
     {
-        copy(__DIR__ . '/vue-stubs/router/app.js', resource_path('js/app.js'));
         copy(__DIR__ . '/vue-stubs/router/Welcome.vue', resource_path('js/views/Welcome.vue'));
         copy(__DIR__ . '/vue-stubs/router/index.js', resource_path('js/router/index.js'));
+
+        $replaced = str_replace(
+            "const app = createApp(App)",
+            "const app = createApp(App)\n\t.use(router)",
+            file_get_contents(resource_path('js/app.js'))
+        );
+
+        $replaced = str_replace(
+            "app.mount('#app');",
+            "router.isReady().then(() => {\n\tapp.mount('#app');\n});",
+            $replaced
+        );
+
+        file_put_contents(
+            resource_path('js/app.js'),
+            str_replace(
+                "import App from './App.vue';",
+                "import App from './App.vue';\n\nimport router from './router';",
+                $replaced
+            )
+        );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Usanzadunje\Scaffold\Commands;
 
 use Illuminate\Console\Command;
+use Usanzadunje\Scaffold\Presets\BrowserSync;
 use Usanzadunje\Scaffold\Presets\Docker;
 use Usanzadunje\Scaffold\Presets\Vite;
 use Usanzadunje\Scaffold\Presets\Vue;
@@ -115,6 +116,12 @@ class ScaffoldCommand extends Command
      */
     private function docker()
     {
+        if($this->isPositiveAnswer($this->ask('Do you want browser sync webpack plugin as well?', 'no')))
+        {
+            BrowserSync::install();
+
+            $this->info('Browser sync successfully added.');
+        }
         Docker::install();
 
         $this->info('Docker scaffolding installed successfully.');

@@ -11,8 +11,7 @@ use Usanzadunje\Scaffold\Presets\Vuex;
 
 class ScaffoldCommand extends Command
 {
-    //public $signature = 'scaffold {preset: Name of the preset to scaffold application with} {--m|middleware: Whether middleware scaffolding should be included with vue-router}';
-    public $signature = 'scaffold {preset} {--m|middleware}';
+    public $signature = 'scaffold {preset : Name of the preset to scaffold application with}';
 
     public $description = 'Scaffold your application based on provided templates.';
 
@@ -55,16 +54,17 @@ class ScaffoldCommand extends Command
             ['None', 'Vue Router', 'Inertia'],
             0,
         );
+        
+        if($router === 'Vue Router')
+        {
+            $this->vueRouter();
+        }
+
         $stateManager = $this->choice(
             'Choose state manager for your application',
             ['None', 'Vuex'],
             0,
         );
-
-        if($router === 'Vue Router')
-        {
-            $this->vueRouter();
-        }
 
         if($stateManager === 'Vuex')
         {
@@ -79,7 +79,9 @@ class ScaffoldCommand extends Command
      */
     private function vueRouter()
     {
-        VueRouter::install($this->option('middleware'));
+        $wantsMiddleware = $this->ask('Do you want middleware scaffolding as well?', 'no');
+
+        VueRouter::install($this->isPositiveAnswer($wantsMiddleware));
         $this->info('Vue Router scaffolding installed successfully.');
     }
 
@@ -105,15 +107,15 @@ class ScaffoldCommand extends Command
 
         $this->info('Docker scaffolding installed successfully.');
     }
-    //
-    ///**
-    // * Check whether user selected positive answer.
-    // *
-    // * @param string $answer
-    // * @return bool
-    // */
-    //private function isPositiveAnswer(string $answer): bool
-    //{
-    //    return in_array($answer, ['yes', 'ye', 'y', 1]);
-    //}
+
+    /**
+     * Check whether user selected positive answer.
+     *
+     * @param string $answer
+     * @return bool
+     */
+    private function isPositiveAnswer(string $answer): bool
+    {
+        return in_array($answer, ['yes', 'ye', 'y', 1]);
+    }
 }

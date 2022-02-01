@@ -18,7 +18,13 @@ class Docker extends Preset
         static::ensureDirectoriesExist();
         static::updateBootstrapping();
         static::updateEnvContent();
-        static::updateWebpackConfiguration();
+        if(file_exists(base_path('vite.config.js')))
+        {
+            static::updateViteConfiguration();
+        }else
+        {
+            static::updateWebpackConfiguration();
+        }
     }
 
     /**
@@ -139,5 +145,57 @@ class Docker extends Preset
                 $replaced
             );
         }
+    }
+
+    /**
+     * Updating 'vite.config.js' file in order to work with Docker.
+     *
+     * @return void
+     */
+    public static function updateViteConfiguration(): void
+    {
+        // Replacing host in 'vite.config.js' file
+        $matches = null;
+        preg_match("/host: '([^']+)'/", file_get_contents(base_path('vite.config.js')), $matches);
+
+        $replaced = str_replace(
+            $matches[0],
+            "host: '0.0.0.0'",
+            file_get_contents(base_path('vite.config.js'))
+        );
+
+        file_put_contents(
+            base_path('vite.config.js'),
+            $replaced
+        );
+
+        // Replacing npm command in 'docker-compose.yml' file
+        $replaced = str_replace(
+            "watch",
+            "dev",
+            file_get_contents(base_path('docker-compose.yml'))
+        );
+
+        file_put_contents(
+            base_path('docker-compose.yml'),
+            $replaced
+        );
+
+        // Replacing ports in 'docker-compose.yml' file
+        $replaced = str_replace(
+            "  - \"3000:3000\"",
+            "",
+            file_get_contents(base_path('docker-compose.yml'))
+        );
+        $replaced = str_replace(
+            "command: php artisan serve --host=0.0.0.0 --port=80",
+            "ports:\n\t\t\t- \"3000:3000\"\n\t\tcommand: php artisan serve --host=0.0.0.0 --port=3000",
+            $replaced
+        );
+
+        file_put_contents(
+            base_path('docker-compose.yml'),
+            $replaced
+        );
     }
 }

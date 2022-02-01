@@ -28,6 +28,7 @@ class Vite extends Preset
         static::updateNodePackages();
         static::updateNodeScripts();
         static::updateBootstrapping();
+        static::updateViteConfiguration();
     }
 
     /**
@@ -105,7 +106,18 @@ class Vite extends Preset
                 resource_path('js/app.js'),
                 "import '../css/app.css';\n\n" . $appFile
             );
+        }
+    }
 
+    /**
+     * Updating 'vite.config.js' file.
+     *
+     * @return void
+     */
+    protected static function updateViteConfiguration(): void
+    {
+        if(static::$isVueInstalled)
+        {
             $replaced = str_replace(
                 "from 'vite';",
                 "from 'vite';\nimport vue              from '@vitejs/plugin-vue';",

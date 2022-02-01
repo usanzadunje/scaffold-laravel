@@ -82,8 +82,7 @@ class VueRouter extends Preset
             $replaced
         );
 
-        if($wantsMiddleware)
-        {
+        if ($wantsMiddleware) {
             static::generateMiddlewareScaffolding();
         }
     }

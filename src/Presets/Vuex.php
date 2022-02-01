@@ -83,8 +83,7 @@ class Vuex extends Preset
      */
     protected static function updateWelcomeView()
     {
-        if(file_exists(resource_path('js/views/Welcome.vue')))
-        {
+        if (file_exists(resource_path('js/views/Welcome.vue'))) {
             $replace = str_replace(
                 "import { useRouter }       from 'vue-router';",
                 "import { useRouter }       from 'vue-router';\nimport { useStore }       from 'vuex';",

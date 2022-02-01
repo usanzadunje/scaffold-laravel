@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/usanzadunje/scaffold-laravel/Check%20&%20fix%20styling?label=code%20style)](https://github.com/usanzadunje/scaffold-laravel/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/usanzadunje/scaffold-laravel.svg?style=flat-square)](https://packagist.org/packages/usanzadunje/scaffold-laravel)
 
-This package provides multiple options to scaffold your application. 
+Multiple scaffolding  options for Laravel application. 
 
 Installing Vue, adding Vue Router/Inertia as your frontend router, adding Vuex as state manager. Replacing Webpack with Vite or installing Browser Sync plugin for Webpack. Also adds scaffolding for Docker with any of these presets mentioned.
 

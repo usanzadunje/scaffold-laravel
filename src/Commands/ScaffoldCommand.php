@@ -35,6 +35,11 @@ class ScaffoldCommand extends Command
             case 'docker':
                 $this->docker();
                 break;
+            case 'all':
+                $this->vue();
+                $this->vite();
+                $this->docker();
+                break;
         }
 
         return self::SUCCESS;
@@ -116,18 +121,44 @@ class ScaffoldCommand extends Command
      */
     private function docker()
     {
-        if(
-            !file_exists(base_path('vite.config.js')) &&
-            $this->isPositiveAnswer($this->ask('Do you want browser sync webpack plugin as well?', 'no'))
-        )
+        if(!file_exists(base_path('vite.config.js')) && file_exists(base_path('webpack.mix.js')))
         {
-            BrowserSync::install();
-
-            $this->info('Browser sync successfully added.');
+            $this->checkWhichDevEnvUserWants();
         }
         Docker::install();
 
         $this->info('Docker scaffolding installed successfully.');
+    }
+
+    /**
+     * Install Browser Sync Webpack plugin.
+     *
+     * @return void
+     */
+    private function browserSync()
+    {
+        BrowserSync::install();
+
+        $this->info('Browser sync successfully added.');
+    }
+
+    private function checkWhichDevEnvUserWants()
+    {
+        $environment = $this->choice(
+            'Which one would you like to install?',
+            ['None', 'Vite', 'Browser Sync[Webpack]'],
+            0
+        );
+
+        if($environment === 'Vite')
+        {
+            $this->vite();
+        }
+
+        if($environment === 'Browser Sync')
+        {
+            $this->browserSync();
+        }
     }
 
     /**

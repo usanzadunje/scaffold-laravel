@@ -13,8 +13,7 @@ class Preset
      */
     protected static function updateNodeScripts(): void
     {
-        if(!file_exists(base_path('package.json')))
-        {
+        if (! file_exists(base_path('package.json'))) {
             return;
         }
 
@@ -23,7 +22,8 @@ class Preset
         $jsonContent = json_decode(file_get_contents(base_path('package.json')), true);
 
         $jsonContent[$configurationKey] = static::updateScriptsArray(
-            array_key_exists($configurationKey, $jsonContent) ? $jsonContent[$configurationKey] : []);
+            array_key_exists($configurationKey, $jsonContent) ? $jsonContent[$configurationKey] : []
+        );
 
         ksort($jsonContent[$configurationKey]);
 
@@ -41,8 +41,7 @@ class Preset
      */
     protected static function updateNodePackages(bool $dev = true): void
     {
-        if(!file_exists(base_path('package.json')))
-        {
+        if (! file_exists(base_path('package.json'))) {
             return;
         }
 
@@ -70,7 +69,7 @@ class Preset
      */
     protected static function removeNodeModules()
     {
-        tap(new Filesystem(), function(Filesystem $files) {
+        tap(new Filesystem(), function (Filesystem $files) {
             $files->deleteDirectory(base_path('node_modules'));
 
             $files->delete(base_path('package-lock.json'));

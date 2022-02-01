@@ -18,11 +18,9 @@ class Docker extends Preset
         static::ensureDirectoriesExist();
         static::updateBootstrapping();
         static::updateEnvContent();
-        if(file_exists(base_path('vite.config.js')))
-        {
+        if (file_exists(base_path('vite.config.js'))) {
             static::updateViteConfiguration();
-        }else
-        {
+        } else {
             static::updateWebpackConfiguration();
         }
     }
@@ -57,8 +55,7 @@ class Docker extends Preset
      */
     public static function updateEnvContent(): void
     {
-        if(file_exists(base_path('.env')))
-        {
+        if (file_exists(base_path('.env'))) {
             $replaced = str_replace(
                 "DB_HOST=" . env('DB_HOST'),
                 "DB_HOST=db",
@@ -70,8 +67,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_USERNAME') === 'root')
-        {
+        if (env('DB_USERNAME') === 'root') {
             $replaced = str_replace(
                 "DB_USERNAME=root",
                 "DB_USERNAME=laravel",
@@ -83,8 +79,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_PASSWORD') === '')
-        {
+        if (env('DB_PASSWORD') === '') {
             $replaced = str_replace(
                 "DB_PASSWORD=",
                 "DB_PASSWORD=laravel",
@@ -96,8 +91,7 @@ class Docker extends Preset
             );
         }
 
-        if(env('DB_PORT') != '3306')
-        {
+        if (env('DB_PORT') != '3306') {
             $replaced = str_replace(
                 "DB_PORT=" . env('DB_PORT'),
                 "DB_PORT=3306",
@@ -117,11 +111,10 @@ class Docker extends Preset
      */
     public static function updateWebpackConfiguration(): void
     {
-        if(
+        if (
             file_exists(base_path('webpack.mix.js')) &&
             preg_match('/mix.browserSync/', file_get_contents(base_path('webpack.mix.js')))
-        )
-        {
+        ) {
             $matches = null;
             preg_match("/proxy: '([^']+)'/", file_get_contents(base_path('webpack.mix.js')), $matches);
 

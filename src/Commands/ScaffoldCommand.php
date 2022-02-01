@@ -18,30 +18,36 @@ class ScaffoldCommand extends Command
 
     public function handle(): int
     {
-        switch($this->argument('preset'))
-        {
+        switch ($this->argument('preset')) {
             case 'vue':
                 $this->vue();
+
                 break;
             case 'vue-router':
                 $this->vueRouter();
+
                 break;
             case 'vuex':
                 $this->vuex();
+
                 break;
             case 'vite':
                 $this->vite();
+
                 break;
             case 'docker':
                 $this->docker();
+
                 break;
             case 'browser-sync':
                 $this->browserSync();
+
                 break;
             case 'all':
                 $this->vue();
                 $this->vite();
                 $this->docker();
+
                 break;
         }
 
@@ -64,8 +70,7 @@ class ScaffoldCommand extends Command
             0,
         );
 
-        if($router === 'Vue Router')
-        {
+        if ($router === 'Vue Router') {
             $this->vueRouter();
         }
 
@@ -75,8 +80,7 @@ class ScaffoldCommand extends Command
             0,
         );
 
-        if($stateManager === 'Vuex')
-        {
+        if ($stateManager === 'Vuex') {
             $this->vuex();
         }
     }
@@ -124,8 +128,7 @@ class ScaffoldCommand extends Command
      */
     private function docker()
     {
-        if(!file_exists(base_path('vite.config.js')) && file_exists(base_path('webpack.mix.js')))
-        {
+        if (! file_exists(base_path('vite.config.js')) && file_exists(base_path('webpack.mix.js'))) {
             $this->checkWhichDevEnvUserWants();
         }
         Docker::install();
@@ -153,13 +156,11 @@ class ScaffoldCommand extends Command
             0
         );
 
-        if($environment === 'Vite')
-        {
+        if ($environment === 'Vite') {
             $this->vite();
         }
 
-        if($environment === 'Browser Sync[Webpack]')
-        {
+        if ($environment === 'Browser Sync[Webpack]') {
             $this->browserSync();
         }
     }

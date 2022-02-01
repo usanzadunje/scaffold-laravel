@@ -31,7 +31,7 @@ Available presets :
 - `docker`
 - `all` *(installs vue, vite and docker preset all together)*
 
-##Vue 
+## Vue 
 Will generate following files and directories inside your resources/js directory :
 
 - `components` directory
@@ -43,7 +43,7 @@ Will generate following files and directories inside your resources/js directory
 
 Additionally, it will ask if you would like router or state manager installed as well.
 
-##Vue Router
+## Vue Router
 Will generate following files and directories inside your resources/js directory :
 
 - `router` directory and inside it basic scaffolding for routes with one example route defined
@@ -55,7 +55,7 @@ Additionally, it will ask if you would like basic middleware scaffolding for you
 
 Routes which require middleware(s) should have meta filed with middleware property defined on them which is an array of middlewares. You can define your middlewares in `middlewares` directory which will be created along with example middleware.
 
-##Vuex
+## Vuex
 Will generate following files and directories inside your resources/js directory :
 
 - `store` directory and inside it basic scaffolding for vuex in module fashion
@@ -63,7 +63,7 @@ Will generate following files and directories inside your resources/js directory
 - It will initialize itself inside `app.js` file
 - Vuex scaffolding comes along with `vue-persistedstate` plugin which will persist data from state in `Local Storage`
 
-##Vite
+## Vite
 Will remove all packages, scripts and files associated with `Webpack`. Additionally, it will create `vite.config.js` in root of project directory and setup basic configuration.
 
 If you have `Vue` installed it will add `Vite` plugin for `Vue` and optimize configuration for it as well (same goes if `Vue Router` or `Vuex` are installed)
@@ -72,7 +72,7 @@ If you installed `Vue` using this package it will generate `app.blade.php` file 
 If you however do not have `app.blade.php` file it will not try and replace these, so you will need to add `@vite` directive yourself to your layout file.
 It will also import your `css/app.css` file inside app.js since this is how `Vite` handles css.
 
-##Docker
+## Docker
 Will generate `docker-compose.yml` and `docker-compose.prod.yml` files with container details. Also it will generate docker-compose directory which contains configuration for: `nginx`, `php`, `suppervisord` and initialization scripts for development and production.
 
 It will adopt itself depending on whether you use `Webpack` or `Vite` in order to work smoothly with them and change `Webpack` or `Vite` configuration accordingly

@@ -1,7 +1,7 @@
-import App from './App.vue';
+import Example from './views/Example.vue';
 
 import { createApp } from 'vue';
 
-const app = createApp(App);
+const app = createApp(Example);
 
 app.mount('#app');

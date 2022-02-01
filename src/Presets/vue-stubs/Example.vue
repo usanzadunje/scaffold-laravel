@@ -1,12 +1,14 @@
 <template>
-  <div></div>
+  <div>
+    This is example view.
+  </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'App',
+  name: 'Example',
   setup() {
 
     return {};

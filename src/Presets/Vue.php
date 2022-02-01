@@ -19,7 +19,7 @@ class Vue extends Preset
         static::updateNodePackages(false);
         static::updateWebpackConfiguration();
         static::updateBootstrapping();
-        static::updateComponent();
+        static::updateView();
         static::removeNodeModules();
     }
 
@@ -93,12 +93,12 @@ class Vue extends Preset
     }
 
     /**
-     * Update the App component.
+     * Update the App example view.
      *
      * @return void
      */
-    protected static function updateComponent()
+    protected static function updateView()
     {
-        copy(__DIR__ . '/vue-stubs/App.vue', resource_path('js/App.vue'));
+        copy(__DIR__ . '/vue-stubs/Example.vue', resource_path('js/views/Example.vue'));
     }
 }

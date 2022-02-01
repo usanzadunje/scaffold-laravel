@@ -53,32 +53,38 @@ class Vuex extends Preset
      */
     protected static function updateBootstrapping()
     {
+        $matches = [];
+        preg_match('/createApp\(([^)]+)\)/', file_get_contents(resource_path('js/app.js')), $matches);
+
         File::copyDirectory(__DIR__ . '/vue-stubs/store', resource_path('js/store'));
 
         $replaced = str_replace(
-            "const app = createApp(App)",
-            "const app = createApp(App)\n\t.use(store)",
+            "from 'vue';",
+            "from 'vue';\n\nimport store from './store';",
             file_get_contents(resource_path('js/app.js'))
+        );
+
+        $replaced = str_replace(
+            $matches[0],
+            "$matches[0]\n\t.use(store)",
+            $replaced
         );
 
         file_put_contents(
             resource_path('js/app.js'),
-            str_replace(
-                "import App from './App.vue';",
-                "import App from './App.vue';\n\nimport store from './store';",
-                $replaced
-            )
+            $replaced
         );
     }
 
     /**
-     * Add vuex example into 'Welcome.vue' view file.
+     * Add Vuex example into 'Welcome.vue' view file.
      *
      * @return void
      */
     protected static function updateWelcomeView()
     {
-        if (file_exists(resource_path('js/views/Welcome.vue'))) {
+        if(file_exists(resource_path('js/views/Welcome.vue')))
+        {
             $replace = str_replace(
                 "import { useRouter }       from 'vue-router';",
                 "import { useRouter }       from 'vue-router';\nimport { useStore }       from 'vuex';",

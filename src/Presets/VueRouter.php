@@ -17,7 +17,7 @@ class VueRouter extends Preset
         static::ensureDirectoriesExist();
         static::updateNodePackages(false);
         static::updateBootstrapping();
-        static::updateComponent();
+        static::updateView();
     }
 
     /**
@@ -50,13 +50,22 @@ class VueRouter extends Preset
      */
     protected static function updateBootstrapping()
     {
+        $matches = [];
+        preg_match('/createApp\(([^)]+)\)/', file_get_contents(resource_path('js/app.js')), $matches);
+
         copy(__DIR__ . '/vue-stubs/router/Welcome.vue', resource_path('js/views/Welcome.vue'));
         copy(__DIR__ . '/vue-stubs/router/index.js', resource_path('js/router/index.js'));
 
         $replaced = str_replace(
-            "const app = createApp(App)",
-            "const app = createApp(App)\n\t.use(router)",
+            "from 'vue';",
+            "from 'vue';\n\nimport router from './router';\n\nimport ExampleApp from './ExampleApp.vue';",
             file_get_contents(resource_path('js/app.js'))
+        );
+
+        $replaced = str_replace(
+            $matches[0],
+            "createApp(ExampleApp)\n\t.use(router)",
+            $replaced
         );
 
         $replaced = str_replace(
@@ -67,28 +76,17 @@ class VueRouter extends Preset
 
         file_put_contents(
             resource_path('js/app.js'),
-            str_replace(
-                "import App from './App.vue';",
-                "import App from './App.vue';\n\nimport router from './router';",
-                $replaced
-            )
+            $replaced
         );
     }
 
     /**
-     * Update the App component.
+     * Update the App example view.
      *
      * @return void
      */
-    protected static function updateComponent()
+    protected static function updateView()
     {
-        file_put_contents(
-            resource_path('js/App.vue'),
-            str_replace(
-                '<div></div>',
-                '<router-view/>',
-                file_get_contents(resource_path('js/App.vue'))
-            )
-        );
+        copy(__DIR__ . '/vue-stubs/router/ExampleApp.vue', resource_path('js/ExampleApp.vue'));
     }
 }
